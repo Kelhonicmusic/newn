@@ -1,0 +1,33 @@
+{% extends 'english_school/base.html' %}
+
+{% block title %}Upload Course Materials{% endblock %}
+
+{% block content %}
+<h2>Upload Course Materials</h2>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <label for="course">Select Course:</label>
+    <select name="course" id="course" required>
+        {% for course in courses %}
+            <option value="{{ course.id }}">{{ course.title }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="materials">Upload Materials (PDF/Word/Video/Image/Audio):</label>
+    <input type="file" name="materials" id="materials" accept=".pdf, .doc, .docx, .mp4, .mov, .jpg, .jpeg, .png, .mp3" multiple required>
+    
+    <button type="submit">Upload</button>
+</form>
+
+<p><a href="{% url 'admin_dashboard' %}">Back to Admin Dashboard</a></p>
+{% endblock %}

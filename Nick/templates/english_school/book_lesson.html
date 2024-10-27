@@ -1,0 +1,27 @@
+<!-- main/templates/main/book_lesson.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Book a Lesson</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="course_id">Select Course:</label>
+        <select name="course_id" class="form-control" required>
+            {% for course in courses %}
+            <option value="{{ course.id }}">{{ course.title }} - ¥{{ course.price }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="slot_id">Select Time Slot:</label>
+        <select name="slot_id" class="form-control" required>
+            {% for slot in available_slots %}
+            <option value="{{ slot.id }}">{{ slot.time_slot }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Book Lesson</button>
+</form>
+{% endblock %}

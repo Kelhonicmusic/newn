@@ -1,0 +1,116 @@
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<div class="hero text-center">
+    <h1>Welcome to Our Online English School</h1>
+    <p>Learn English from the comfort of your home with our certified instructors.</p>
+    <a href="{% url 'register_student' %}" class="btn btn-warning btn-lg">Book a Free Lesson</a>
+</div>
+
+<section class="courses mt-5">
+    <h2>Our English Courses</h2>
+    <div class="row">
+        {% for course in courses %}
+        <div class="col-md-4 mb-4 d-flex justify-content-center"> <!-- Centering the cards -->
+            <div class="course-card">
+                <img src="{{ course.image_url }}" class="card-img-top" alt="English Course: {{ course.name }}">
+                <div class="card-body">
+                    <h3 class="card-title">{{ course.name }}</h3>
+                    <p class="card-text">{{ course.description }}</p>
+                    <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">View Course</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No courses available at the moment.</p>
+        {% endfor %}
+    </div>
+</section>
+
+
+<section class="lesson-booking mt-5">
+    <h2>Book Your Free Lesson</h2>
+    <p>Choose a suitable time for your first free lesson with one of our instructors.</p>
+    <div class="lesson-times">
+        <div class="row justify-content-center">
+            {% for time in lesson_times %}
+            <div class="col-md-3 mb-3">
+                <button class="btn btn-outline-primary btn-block" onclick="bookLesson('{{ time }}')">{{ time }}</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<div class="schedule">
+    <h2>Schedule a Class</h2>
+    <form id="schedule-form" action="{% url 'book_class' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="scheduling_code">Enter Your Scheduling Code:</label>
+            <input type="text" id="scheduling_code" name="scheduling_code" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Book Class Slot</button>
+    </form>
+</div>
+
+<section class="feedback mt-5">
+    <h2>What Our Students Say</h2>
+    <div class="feedback-section">
+        {% for rating in approved_ratings %}
+        <div class="feedback-item mb-3">
+            <strong>{{ rating.student.username }} rated:</strong>
+            <p>Rating: {{ rating.rating }} out of 5</p>
+            <p>{{ rating.comment }}</p>
+            <p><em>Submitted on: {{ rating.created_at|date:"F j, Y" }}</em></p>
+        </div>
+        {% empty %}
+        <p>No feedback available yet. Be the first to leave a review!</p>
+        {% endfor %}
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h3>About Us</h3>
+                <p>
+                    We are dedicated to providing quality English language courses
+                    to help you achieve your goals.
+                </p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-section links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Courses</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer-section contact">
+                <h3>Contact Us</h3>
+                <p>Email: info@englishschool.com</p>
+                <p>Phone: +123 456 7890</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 English School. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+
+<script>
+    function bookLesson(time) {
+        alert("You have booked a lesson at " + time);
+    }
+</script>
+
+{% endblock %}

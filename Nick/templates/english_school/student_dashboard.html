@@ -1,0 +1,132 @@
+{% extends 'english_school/base.html' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Welcome, {{ user.username }}</h2>
+
+    <h3>Your Upcoming Classes</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson in upcoming_lessons %}
+            <tr>
+                <td>{{ lesson.course.name }}</td>
+                <td>{{ lesson.date }}</td>
+                <td>{{ lesson.start_time }} - {{ lesson.end_time }}</td>
+                <td>
+                    <a href="{% url 'cancel_lesson' lesson.id %}" class="btn btn-danger">Cancel</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No upcoming classes.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Zoom Logins</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Zoom Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for zoom in zoom_logins %}
+            <tr>
+                <td>{{ zoom.date }}</td>
+                <td>{{ zoom.time }}</td>
+                <td><a href="{{ zoom.link }}" target="_blank">Join Zoom</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No Zoom logins available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Your Completed Lessons</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson in completed_lessons %}
+            <tr>
+                <td>{{ lesson.course.name }}</td>
+                <td>{{ lesson.date }}</td>
+                <td>{{ lesson.start_time }} - {{ lesson.end_time }}</td>
+                <td>
+                    <a href="{% url 'rate_lesson' lesson.id %}" class="btn btn-primary">Rate Lesson</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No completed lessons to display.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Your Comments and Ratings</h3>
+    {% for comment in comments %}
+        <div>
+            <p><strong>{{ comment.lesson.course.name }}</strong>: {{ comment.content }} (Rating: {{ comment.rating }})</p>
+        </div>
+    {% empty %}
+        <p>No comments available.</p>
+    {% endfor %}
+
+    <h3>Lesson Progress</h3>
+    <ul>
+        {% for progress in lesson_progress %}
+            <li>{{ progress.lesson.title }}: {{ progress.completed_lessons }} of {{ progress.total_lessons }} lessons completed.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Book a New Class</h3>
+    <form action="{% url 'book_lesson' %}" method="POST" class="mb-3">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="course">Select Course:</label>
+            <select name="course" id="course" class="form-control" required>
+                {% for course in courses %}
+                <option value="{{ course.id }}">{{ course.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="lesson_time">Select Lesson Time:</label>
+            <select name="lesson_time" id="lesson_time" class="form-control" required>
+                {% for time in available_times %}
+                <option value="{{ time }}">{{ time }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Book Class</button>
+    </form>
+
+    <h3>Chat with Customer Service</h3>
+    <div id="chat-interface">
+        <!-- Chat interface here -->
+    </div>
+</div>
+{% endblock %}

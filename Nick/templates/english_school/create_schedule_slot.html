@@ -1,0 +1,11 @@
+<!-- main/templates/main/create_schedule_slot.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Create Schedule Slot</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Create Slot</button>
+</form>
+{% endblock %}

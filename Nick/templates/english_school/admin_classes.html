@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Scheduled Classes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>All Scheduled Classes</h1>
+    {% if scheduled_classes %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for scheduled_class in scheduled_classes %}
+                    <tr>
+                        <td>{{ scheduled_class.student.username }}</td>
+                        <td>{{ scheduled_class.subject }}</td>
+                        <td>{{ scheduled_class.date }}</td>
+                        <td>{{ scheduled_class.time }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No scheduled classes available.</p>
+    {% endif %}
+</div>
+{% endblock %}

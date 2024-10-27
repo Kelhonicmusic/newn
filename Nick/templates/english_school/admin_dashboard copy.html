@@ -1,0 +1,29 @@
+{% extends 'english_school/base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+<h3>Manage Courses</h3>
+<a href="{% url 'add_course' %}" class="btn btn-primary">Add Course</a>
+
+<h3>Scheduled Lessons</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Date</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lesson in all_scheduled_lessons %}
+        <tr>
+            <td>{{ lesson.student.username }}</td>
+            <td>{{ lesson.date }}</td>
+            <td>{{ lesson.time }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

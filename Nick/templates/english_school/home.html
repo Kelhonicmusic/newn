@@ -1,0 +1,137 @@
+{% extends 'english_school/base.html' %}
+
+{% block title %}Home - Online English School{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="English, online courses, learn English, language school, ESL"> 
+    <meta name="description" content="Learn English online with personalized courses tailored to your needs. Book a lesson today!">
+    <link rel="stylesheet" href="{% static 'english_school/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="canonical" href="{% url 'index' %}">
+    <meta name="robots" content="index, follow">
+    {% load static %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'index' %}">English School</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+                    {% elif user.teacher %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'teacher_dashboard' %}">Teacher Dashboard</a></li>
+                    {% elif user.studentprofile %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'student_dashboard' %}">Student Dashboard</a></li>
+                    {% endif %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register_student' %}">Register as Student</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register_teacher' %}">Register as Teacher</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'faq' %}">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'policies' %}">Policies</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero text-center">
+        <h1>Welcome to Our Online English School</h1>
+        <p>Learn English from the comfort of your home with our certified instructors.</p>
+        <a href="{% url 'register_student' %}" class="btn btn-success btn-lg">Book a Free Lesson</a>
+    </div>
+
+    <section class="courses mt-5">
+        <h2>Our English Courses</h2>
+        <div class="row">
+            {% for course in courses %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ course.image_url }}" class="card-img-top" alt="English Course: {{ course.name }}">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ course.name }}</h3>
+                        <p class="card-text">{{ course.description }}</p>
+                        <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">View Course</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="lesson-booking mt-5">
+        <h2>Book Your Free Lesson</h2>
+        <p>Choose a suitable time for your first free lesson with one of our instructors.</p>
+        <div class="lesson-times">
+            <div class="row">
+                {% for time in lesson_times %}
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-outline-primary btn-block" onclick="bookLesson('{{ time }}')">{{ time }}</button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="feedback mt-5">
+        <h2>What Our Students Say</h2>
+        <div class="feedback-section">
+            {% for rating in approved_ratings %}
+            <div class="feedback-item mb-3">
+                <strong>{{ rating.student.username }} rated:</strong>
+                <p>Rating: {{ rating.rating }} out of 5</p>
+                <p>{{ rating.comment }}</p>
+                <p><em>Submitted on: {{ rating.created_at|date:"F j, Y" }}</em></p>
+            </div>
+            {% empty %}
+            <p>No feedback available yet. Be the first to leave a review!</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <script src="{% static 'main/js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        function bookLesson(time) {
+            // Logic to handle lesson booking (connect this with your backend or Django views)
+            alert("You have booked a lesson at " + time);
+        }
+
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/your_room_name/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const message = data.message;
+            // Append the message to the chat box
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML += '<div>' + message + '</div>';
+            chatBox.scrollTop = chatBox.scrollHeight;  // Auto-scroll to the latest message
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        // Function to send messages through the chat
+        function sendMessage(message) {
+            if (message) { // Check if the message is not empty
+                chatSocket.send(JSON.stringify({
+                    'message': message
+                }));
+                document.getElementById('chat-message-input').value = ''; // Clear input field
+            }
+        }
+    </script>
+</body>
+</html>
+
+{% endblock %}

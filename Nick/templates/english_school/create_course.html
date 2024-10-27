@@ -1,0 +1,11 @@
+<!-- main/templates/main/create_course.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Create New Course</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Create Course</button>
+</form>
+{% endblock %}

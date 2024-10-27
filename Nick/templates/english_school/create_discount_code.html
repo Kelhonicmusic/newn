@@ -1,0 +1,11 @@
+<!-- main/templates/main/create_discount_code.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Create Discount Code</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Create Discount Code</button>
+</form>
+{% endblock %}

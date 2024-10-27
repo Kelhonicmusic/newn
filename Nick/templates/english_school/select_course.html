@@ -1,0 +1,12 @@
+from django.shortcuts import get_object_or_404
+
+@login_required
+def select_course_view(request):
+    courses = Course.objects.all()
+    if request.method == 'POST':
+        course_id = request.POST.get('course_id')
+        course = get_object_or_404(Course, id=course_id)
+        request.session['course_id'] = course.id  # Store course_id in session
+        return redirect('checkout')  # Redirect to checkout
+
+    return render(request, 'main/select_course.html', {'courses': courses})

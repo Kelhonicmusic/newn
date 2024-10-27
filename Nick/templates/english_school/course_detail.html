@@ -1,0 +1,19 @@
+{% extends 'english_school/base.html' %}
+
+{% block title %}{{ course.name }} - Course Detail{% endblock %}
+{% block description %}Detailed information about the {{ course.name }} course at our online English school.{% endblock %}
+
+{% block content %}
+<div class="course-detail">
+    <h2>{{ course.name }}</h2>
+    <img src="{{ course.image_url }}" alt="{{ course.name }}" class="img-fluid">
+    <p>{{ course.description }}</p>
+    <h3>Course Outline</h3>
+    <ul>
+        {% for lesson in course.lessons.all %}
+        <li>{{ lesson }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'book_class' course.id %}" class="btn btn-success">Enroll Now</a>
+</div>
+{% endblock %}

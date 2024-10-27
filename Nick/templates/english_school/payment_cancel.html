@@ -1,0 +1,9 @@
+<!-- main/templates/main/payment_cancel.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Payment Cancelled</h2>
+<p>Your payment was not successful or was cancelled.</p>
+<p>Please try again.</p>
+<a href="{% url 'select_course' %}" class="btn btn-primary">Select Course</a>
+{% endblock %}

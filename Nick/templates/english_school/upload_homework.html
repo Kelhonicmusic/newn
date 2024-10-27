@@ -1,0 +1,18 @@
+{% extends 'english_school/base.html' %}
+
+{% block title %}Upload Homework{% endblock %}
+
+{% block content %}
+<h2>Upload Homework for {{ lesson.course.title }}</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <label for="homework_file">Upload your homework (PDF/Word/Audio):</label>
+    <input type="file" name="homework_file" id="homework_file" accept=".pdf, .doc, .docx, .mp3" required>
+    
+    <button type="submit">Upload</button>
+</form>
+
+<p><a href="{% url 'student_dashboard' %}">Back to Student Dashboard</a></p>
+{% endblock %}

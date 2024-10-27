@@ -1,0 +1,300 @@
+{% extends 'english_school/base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Admin Dashboard</h2>
+
+    <h3>User Management</h3>
+    <h4>Students</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.username }}</td>
+                <td>{{ student.email }}</td>
+                <td>
+                    <a href="{% url 'edit_user' student.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_user' student.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No students found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Teachers</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for teacher in teachers %}
+            <tr>
+                <td>{{ teacher.username }}</td>
+                <td>{{ teacher.email }}</td>
+                <td>
+                    <a href="{% url 'edit_user' teacher.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_user' teacher.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No teachers found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Create a New Course</h3>
+<form action="{% url 'create_course' %}" method="POST" class="mb-3" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="course_title">Course Title:</label>
+        <input type="text" class="form-control" id="course_title" name="course_title" required>
+    </div>
+    <div class="form-group">
+        <label for="course_description">Course Description:</label>
+        <textarea class="form-control" id="course_description" name="course_description" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="course_type">Course Type:</label>
+        <select class="form-control" id="course_type" name="course_type" required>
+            <option value="private">Private</option>
+            <option value="semi_private">Semi-Private</option>
+            <option value="group">Group</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="lessons_count">Number of Lessons:</label>
+        <input type="number" class="form-control" id="lessons_count" name="lessons_count" min="1" value="10" required>
+    </div>
+    <div class="form-group">
+        <label for="course_price">Course Price:</label>
+        <input type="number" class="form-control" id="course_price" name="course_price" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="materials">Upload Course Materials:</label>
+        <input type="file" class="form-control" id="materials" name="materials" accept=".pdf,.doc,.docx,.ppt,.pptx" multiple required>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Course</button>
+</form>
+
+
+    <h3>Course Management</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.name }}</td>
+                <td>
+                    <a href="{% url 'edit_course' course.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_course' course.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No courses found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'add_course' %}" class="btn btn-success">Add New Course</a>
+
+    <h3>Analytics and Reports</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Total Students: {{ total_students }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>Total Teachers: {{ total_teachers }}</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Total Courses: {{ total_courses }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>Total Lessons Completed: {{ total_lessons_completed }}</h4>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h4>Student Enrollment Trends: <canvas id="enrollmentChart"></canvas></h4>
+    </div>
+</div>
+
+    <h3>Communication Logs</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>User</th>
+                <th>Message</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in communication_logs %}
+            <tr>
+                <td>{{ log.date }}</td>
+                <td>{{ log.user.username }}</td>
+                <td>{{ log.message }}</td>
+                <td>{{ log.status }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No communication logs available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Feedback and Reports</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Report ID</th>
+                <th>User</th>
+                <th>Feedback</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for feedback in feedback_reports %}
+            <tr>
+                <td>{{ feedback.id }}</td>
+                <td>{{ feedback.user.username }}</td>
+                <td>{{ feedback.content }}</td>
+                <td>
+                    <a href="{% url 'approve_feedback' feedback.id %}" class="btn btn-success btn-sm">Approve</a>
+                    <a href="{% url 'delete_feedback' feedback.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No feedback reports available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Student Ratings and Comments Approval</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Student</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rating in student_ratings %}
+            <tr>
+                <td>{{ rating.score }}</td>
+                <td>{{ rating.comment }}</td>
+                <td>{{ rating.student.username }}</td>
+                <td>
+                    <a href="{% url 'approve_rating' rating.id %}" class="btn btn-success btn-sm">Approve</a>
+                    <a href="{% url 'reject_rating' rating.id %}" class="btn btn-danger btn-sm">Reject</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No ratings and comments available for approval.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Settings</h3>
+    <form action="{% url 'update_settings' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="site_name">Site Name:</label>
+            <input type="text" class
+
+
+    <h3>Settings</h3>
+    <form action="{% url 'update_settings' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="site_name">Site Name:</label>
+            <input type="text" class="form-control" id="site_name" name="site_name" value="{{ site_name }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Settings</button>
+    </form>
+</div>
+<h3>Update Zoom Logins</h3>
+    <form action="{% url 'update_zoom_logins' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="date">Date:</label>
+            <input type="date" class="form-control" id="date" name="date" required>
+        </div>
+        <div class="form-group">
+            <label for="time">Time:</label>
+            <input type="time" class="form-control" id="time" name="time" required>
+        </div>
+        <div class="form-group">
+            <label for="link">Zoom Link:</label>
+            <input type="url" class="form-control" id="link" name="link" placeholder="https://zoom.us/j/123456789" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Zoom Logins</button>
+    </form>
+
+    <h3>Current Zoom Logins</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Zoom Link</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for zoom in zoom_logins %}
+            <tr>
+                <td>{{ zoom.date }}</td>
+                <td>{{ zoom.time }}</td>
+                <td><a href="{{ zoom.link }}" target="_blank">Join Zoom</a></td>
+                <td>
+                    <a href="{% url 'edit_zoom_login' zoom.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_zoom_login' zoom.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No Zoom logins available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

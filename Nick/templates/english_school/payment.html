@@ -1,0 +1,11 @@
+<!-- main/templates/main/payment.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Payment for {{ course.title }}</h2>
+<p>Total Price: ¥{{ final_price if final_price else course.price }}</p>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Confirm Payment</button>
+</form>
+{% endblock %}

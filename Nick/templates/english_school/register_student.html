@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register as Student</title>
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+</head>
+<body>
+    <h1>Register as Student</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>
+            <label for="id_username">Username:</label>
+            {{ form.username }}
+        </div>
+        <div>
+            <label for="id_email">Email:</label>
+            {{ form.email }}
+        </div>
+        <div>
+            <label for="id_password">Password:</label>
+            {{ form.password }}
+        </div>
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? 
+        <a href="{% url 'student_login' %}">Log in as Student</a> | 
+        <a href="{% url 'teacher_login' %}">Log in as Teacher</a>
+    </p>
+    
+    
+</body>
+</html>

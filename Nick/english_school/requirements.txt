@@ -1,0 +1,32 @@
+Django==4.2
+channels==4.0.0
+channels-redis==4.0.0
+daphne==4.0.0
+python-decouple==3.8
+dj-database-url==1.2.0
+redis==5.0.0
+
+# Stripe and PayPal integration
+stripe==2.70.0
+paypalrestsdk==1.14.0
+
+# Django authentication
+django-allauth==0.54.0
+
+# Other utilities
+psycopg2-binary==2.9.7  # Required only if you use PostgreSQL
+pillow==9.2.0  # For image handling
+gunicorn==20.1.0  # If deploying on platforms like Heroku
+
+# Email backend support (optional if using specific SMTP library)
+# e.g., for Gmail integration:
+django-anymail[mailgun]==9.0
+
+# For handling static files
+whitenoise==6.5.0  # Optional, if serving static files with whitenoise in production
+
+# For security best practices
+django-environ==0.9.0
+
+# Debugging and logging tools
+django-debug-toolbar==3.8.1

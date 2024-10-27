@@ -1,0 +1,107 @@
+{% extends 'english_school/base.html' %}
+
+{% block title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Welcome, {{ user.username }}</h2>
+
+    <h3>Assigned Lessons</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Lesson Title</th>
+                <th>Course</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Goal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson in assigned_lessons %}
+            <tr>
+                <td>{{ lesson.title }}</td>
+                <td>{{ lesson.course.name }}</td>
+                <td>{{ lesson.date }}</td>
+                <td>{{ lesson.start_time }} - {{ lesson.end_time }}</td>
+                <td>
+                    <form action="{% url 'set_goal' lesson.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="goal" placeholder="Set a goal..." value="{{ lesson.goal }}" required />
+                        <button type="submit" class="btn btn-success btn-sm">Save</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No assigned lessons.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Completed Lessons</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Lesson Title</th>
+                <th>Course</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson in completed_lessons %}
+            <tr>
+                <td>{{ lesson.title }}</td>
+                <td>{{ lesson.course.name }}</td>
+                <td>{{ lesson.date }}</td>
+                <td>{{ lesson.start_time }} - {{ lesson.end_time }}</td>
+                <td>{{ lesson.feedback }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No completed lessons.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Your Class Materials</h3>
+    <ul>
+        {% for material in class_materials %}
+        <li>
+            <strong>{{ material.title }}</strong>: <a href="{{ material.file.url }}">Download</a>
+        </li>
+        {% empty %}
+        <li>No materials available.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Student Feedback</h3>
+    {% for feedback in student_feedback %}
+    <div>
+        <p><strong>{{ feedback.student.username }}</strong>: {{ feedback.comment }} (Rating: {{ feedback.rating }})</p>
+    </div>
+    {% empty %}
+    <p>No feedback available.</p>
+    {% endfor %}
+
+    <h3>Chat with Customer Service</h3>
+    <div id="chat-interface">
+        <!-- Chat interface here -->
+    </div>
+
+    <h3>Zoom Logs</h3>
+    <div id="zoom-logs">
+        <ul>
+            {% for log in zoom_logs %}
+            <li>{{ log.date }}: {{ log.details }}</li>
+            {% empty %}
+            <li>No Zoom logs available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

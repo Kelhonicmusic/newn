@@ -1,0 +1,25 @@
+# Uthis is a new registeration form for new students. Its under development. Students needs to add details about their goals for studing english. It should be
+ incorporated to be the main registration form.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h2>Register</h2>
+    <form method="POST">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <textarea name="english_goal" placeholder="Your English Study Goals" required></textarea>
+        <select name="studied_before">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

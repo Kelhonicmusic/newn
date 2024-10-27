@@ -1,0 +1,264 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif; /* Modern font */
+    background-color: #ffffff; /* Light background for contrast */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #007bff;
+    padding: 15px 20px;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    color: white;
+}
+
+.nav-link {
+    color: white;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #ffcc00; /* Gold color on hover */
+}
+
+/* Hero Section */
+.hero {
+    background-image: url('https://source.unsplash.com/1600x900/?english'); /* Hero image */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    background: linear-gradient(to right, #007bff, #0056b3);
+    padding: 50px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.5rem;
+}
+
+/* Courses Section */
+/* Courses Section */
+.courses {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 20px; /* Add padding for better spacing */
+}
+
+.courses h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between cards */
+}
+
+.course-card {
+    background-color: #ffffff; /* White background for cards */
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    flex: 1 1 300px; /* Allow cards to grow and shrink */
+    position: relative; /* For image overlay */
+    max-width: 350px; /* Set max width for better aesthetics */
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.course-card img {
+    width: 100%; /* Make image responsive */
+    height: 200px; /* Fixed height for uniformity */
+    object-fit: cover; /* Cover image without stretching */
+}
+
+.card-body {
+    padding: 20px;
+    text-align: left; /* Align text to left for readability */
+}
+
+.card-title {
+    font-size: 1.8rem;
+    margin: 10px 0;
+    color: #4a90e2; /* Use a color for the title */
+    font-weight: bold; /* Make the title bold */
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #666; /* A softer color for the description */
+    margin-bottom: 15px; /* Space below the description */
+}
+
+/* Add a button style */
+.btn-primary {
+    background-color: #130e33; /* Button color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #da001d; /* Darker shade on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.btn-warning {
+    background-color: #ffcc00; /* Button color */
+    color: #333; /* Button text color */
+    border: none; /* Remove border */
+    padding: 12px 30px; /* Button padding */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1.2rem; /* Button font size */
+    transition: background-color 0.3s, transform 0.3s; /* Transition for hover effects */
+    z-index: 2; /* Ensure button is above overlay */
+}
+
+.btn-warning:hover {
+    background-color: #ff0040; /* Lighter shade on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+
+/* Lesson Booking Section */
+.lesson-booking {
+    background-color: #e9f7fa; /* Light blue background */
+    padding: 60px 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.lesson-booking h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.lesson-times button {
+    font-size: 1.2rem;
+    margin: 10px 5px; /* Better spacing for buttons */
+}
+
+/* Feedback Section */
+.feedback {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 60px;
+}
+
+.feedback h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.feedback-item {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+
+.feedback-item:last-child {
+    border-bottom: none;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #4a90e2; /* Primary color */
+    color: white; /* Text color */
+    padding: 40px 20px; /* Padding for footer */
+    margin-top: 40px; /* Space above the footer */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between; /* Space between sections */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.footer-section {
+    flex: 1; /* Flex grow */
+    margin: 10px; /* Margin for spacing */
+    min-width: 200px; /* Minimum width for sections */
+}
+
+.footer-section h3 {
+    font-size: 1.8rem; /* Header font size */
+    margin-bottom: 20px; /* Space below header */
+}
+
+.footer-section p {
+    font-size: 1rem; /* Body text font size */
+    line-height: 1.5; /* Better line spacing */
+}
+
+.footer-section a {
+    color: white; /* Link color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Transition for hover effect */
+}
+
+.footer-section a:hover {
+    color: #ffcc00; /* Gold color on hover */
+}
+
+.socials a {
+    margin: 0 10px; /* Spacing for social icons */
+    font-size: 1.5rem; /* Icon size */
+    color: white; /* Icon color */
+    transition: color 0.3s; /* Transition for hover effect */
+}
+
+.socials a:hover {
+    color: #ffcc00; /* Gold color on hover */
+}
+
+.footer-bottom {
+    text-align: center; /* Center text */
+    margin-top: 20px; /* Space above bottom text */
+    font-size: 0.9rem; /* Smaller font for bottom text */
+}
+
+/* Responsive Design for Footer */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column; /* Stack sections on smaller screens */
+    }
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+    }
+
+    .lesson-times button {
+        font-size: 1rem;
+    }
+}

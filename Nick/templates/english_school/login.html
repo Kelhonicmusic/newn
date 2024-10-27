@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Online English School</title>
+    
+    <!-- Load static files -->
+    {% load static %}
+    
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    
+    {% block extra_css %}
+    <!-- Block for additional CSS to be added in child templates -->
+    {% endblock %}
+</head>
+<body>
+    <div class="login-container">
+        <h2>Log In</h2>
+        <form method="POST" action="{% url 'teacher_login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            
+            <!-- Display login error messages, if any -->
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary">Log In</button>
+        </form>
+
+        <!-- Links for registration and password reset -->
+        <div class="login-footer">
+            <p>Don't have an account? <a href="{% url 'register_student' %}">Register as Student</a> | <a href="{% url 'register_teacher' %}">Register as Teacher</a></p>
+            
+        </div>
+    </div>
+
+    <!-- JavaScript Links -->
+    <script src="{% static 'english_school/js/bootstrap.bundle.min.js' %}"></script>
+    
+    {% block extra_js %}
+    <!-- Block for additional JavaScript to be added in child templates -->
+    {% endblock %}
+</body>
+</html>

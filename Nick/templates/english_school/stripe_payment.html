@@ -1,0 +1,12 @@
+<!-- main/templates/main/stripe_payment.html -->
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h2>Pay for {{ course.title }} with Stripe</h2>
+<p>Price: ¥{{ course.price }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Pay with Stripe</button>
+</form>
+{% endblock %}

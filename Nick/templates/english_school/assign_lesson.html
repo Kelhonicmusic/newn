@@ -1,0 +1,28 @@
+<!-- main/templates/main/assign_lesson.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Assign Lesson to Teacher</h2>
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="lesson_id">Select Lesson:</label>
+        <select name="lesson_id" class="form-control" required>
+            {% for lesson in lessons %}
+            <option value="{{ lesson.id }}">
+                {{ lesson.course.title }} - {{ lesson.student.user.username }} on {{ lesson.date_time }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="teacher_id">Select Teacher:</label>
+        <select name="teacher_id" class="form-control" required>
+            {% for teacher in teachers %}
+            <option value="{{ teacher.id }}">{{ teacher.user.username }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Assign Lesson</button>
+</form>
+{% endblock %}

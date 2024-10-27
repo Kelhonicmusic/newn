@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="English, online courses, learn English, language school, ESL">
+    <title>{% block title %}Online English School{% endblock %}</title>
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'english_school/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta name="description" content="Learn English online with personalized courses tailored to your needs. Book a lesson today!">
+    <link rel="canonical" href="{% url 'home' %}">
+    <meta name="robots" content="index, follow">
+    
+    <style>
+        #chat-interface {
+            display: none; /* Initially hidden */
+            position: fixed; 
+            bottom: 10px; 
+            right: 10px; 
+            width: 300px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            background: white; 
+            padding: 10px; 
+            z-index: 1000;
+        }
+        #chat-button {
+            position: fixed; 
+            bottom: 10px; 
+            right: 10px; 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 50%; 
+            width: 40px; 
+            height: 40px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            cursor: pointer; 
+            z-index: 1001; /* Above chat interface */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'home' %}">English School</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+                    {% elif user.teacher %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'teacher_dashboard' %}">Teacher Dashboard</a></li>
+                    {% elif user.studentprofile %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'student_dashboard' %}">Student Dashboard</a></li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link btn btn-link" style="display: inline; padding: 0; border: none; background: red;">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register_student' %}">Register as Student</a></li>
+                    
+                    
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'faq' %}">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'policies' %}">Policies</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Chat Button -->
+    <button id="chat-button" onclick="toggleChat()">💬</button>
+
+    <!-- Chat Interface -->
+    <div id="chat-interface">
+        <h5>Chat Support</h5>
+        <div id="chat-box" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll; margin-bottom: 10px;">
+            <!-- Chat messages will be appended here -->
+        </div>
+        <input type="text" id="chat-message-input" placeholder="Type your message..." style="width: calc(100% - 60px); padding: 5px;" />
+        <button onclick="sendMessage()" style="width: 50px;">Send</button>
+    </div>
+
+    <script src="{% static 'main/js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/your_room_name/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const message = data.message;
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML += '<div>' + message + '</div>';
+            chatBox.scrollTop = chatBox.scrollHeight;
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        function sendMessage() {
+            const messageInput = document.getElementById('chat-message-input');
+            const message = messageInput.value;
+            if (message.trim() !== "") {
+                chatSocket.send(JSON.stringify({ 'message': message }));
+                messageInput.value = '';
+            }
+        }
+
+        function toggleChat() {
+            const chatInterface = document.getElementById('chat-interface');
+            if (chatInterface.style.display === 'none' || chatInterface.style.display === '') {
+                chatInterface.style.display = 'block'; // Show chat
+            } else {
+                chatInterface.style.display = 'none'; // Hide chat
+            }
+        }
+
+        document.getElementById("chat-message-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

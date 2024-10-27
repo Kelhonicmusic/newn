@@ -1,0 +1,11 @@
+<!-- main/templates/main/register.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Register as {{ role }}</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+{% endblock %}

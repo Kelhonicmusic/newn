@@ -1,0 +1,32 @@
+<!-- main/templates/main/manage_schedule.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Manage Schedule</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Time Slot</th>
+            <th>Available</th>
+            <th>Toggle Availability</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for schedule in schedules %}
+        <tr>
+            <td>{{ schedule.time_slot }}</td>
+            <td>{{ schedule.available }}</td>
+            <td>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="schedule_id" value="{{ schedule.id }}">
+                    <button type="submit" class="btn btn-warning">
+                        {% if schedule.available %}Block{% else %}Open{% endif %}
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

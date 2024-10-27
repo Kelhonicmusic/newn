@@ -1,0 +1,127 @@
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+
+<h3>Courses</h3>
+<a href="{% url 'create_course' %}" class="btn btn-success">Create New Course</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Price (¥)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for course in courses %}
+        <tr>
+            <td>{{ course.title }}</td>
+            <td>{{ course.get_course_type_display }}</td>
+            <td>{{ course.price }}</td>
+            <td>
+                <!-- Add edit/delete options as needed -->
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Teachers</h3>
+<a href="#" class="btn btn-info">Manage Teachers</a>
+<!-- Add teacher management features -->
+
+<h3>Students</h3>
+<a href="#" class="btn btn-info">Manage Students</a>
+<!-- Add student management features -->
+
+<h3>Lessons</h3>
+<a href="{% url 'assign_lesson' %}" class="btn btn-primary">Assign Lessons</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Student</th>
+            <th>Date & Time</th>
+            <th>Assigned</th>
+            <th>Completed</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lesson in lessons %}
+        <tr>
+            <td>{{ lesson.course.title }}</td>
+            <td>
+                {% if lesson.student %}
+                    {{ lesson.student.user.username }}
+                {% else %}
+                    No student assigned
+                {% endif %}
+            </td>
+            <td>{{ lesson.date_time }}</td>
+            <td>{{ lesson.assigned }}</td>
+            <td>{{ lesson.completed }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Schedules</h3>
+<a href="{% url 'create_schedule_slot' %}" class="btn btn-secondary">Create Schedule Slot</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Time Slot</th>
+            <th>Available</th>
+            <th>Toggle</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for schedule in schedules %}
+        <tr>
+            <td>{{ schedule.time_slot }}</td>
+            <td>{{ schedule.available }}</td>
+            <td>
+                <form method="POST" action="{% url 'manage_schedule' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="schedule_id" value="{{ schedule.id }}">
+                    <button type="submit" class="btn btn-warning">
+                        {% if schedule.available %}Block{% else %}Open{% endif %}
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Discount Codes</h3>
+<a href="{% url 'create_discount_code' %}" class="btn btn-secondary">Create Discount Code</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Discount (%)</th>
+            <th>Created By</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for code in discount_codes %}
+        <tr>
+            <td>{{ code.code }}</td>
+            <td>{{ code.discount_percent }}</td>
+            <td>{{ code.created_by.username }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Pricing Ratios</h3>
+<a href="{% url 'set_course_prices' %}" class="btn btn-secondary">Set Course Prices</a>
+<p>Private Ratio: ¥{{ pricing.private_ratio }}</p>
+<p>Semi-Private Ratio: ¥{{ pricing.semi_private_ratio }}</p>
+<p>Group Ratio: ¥{{ pricing.group_ratio }}</p>
+<p><a href="{% url 'upload_course_materials' %}">Upload Course Materials</a></p>
+
+{% endblock %}

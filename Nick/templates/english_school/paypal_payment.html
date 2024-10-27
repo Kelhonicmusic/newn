@@ -1,0 +1,12 @@
+<!-- main/templates/main/paypal_payment.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Pay for {{ course.title }} with PayPal</h2>
+<p>Price: ¥{{ course.price }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Pay with PayPal</button>
+</form>
+{% endblock %}

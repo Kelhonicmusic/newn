@@ -1,0 +1,22 @@
+<!-- main/templates/main/set_prices.html -->
+{% extends 'english_school/base.html' %}
+
+{% block content %}
+<h2>Set Course Prices</h2>
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="private_ratio">Private Lesson Price (¥):</label>
+        <input type="number" step="0.01" name="private_ratio" class="form-control" value="{{ pricing.private_ratio }}" required>
+    </div>
+    <div class="form-group">
+        <label for="semi_private_ratio">Semi-Private Lesson Price (¥):</label>
+        <input type="number" step="0.01" name="semi_private_ratio" class="form-control" value="{{ pricing.semi_private_ratio }}" required>
+    </div>
+    <div class="form-group">
+        <label for="group_ratio">Group Lesson Price (¥):</label>
+        <input type="number" step="0.01" name="group_ratio" class="form-control" value="{{ pricing.group_ratio }}" required>
+    </div>
+    <button type="submit" class="btn btn-success">Set Prices</button>
+</form>
+{% endblock %}
